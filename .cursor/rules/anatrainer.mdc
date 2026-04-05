@@ -1,0 +1,8 @@
+---
+description: anatrainer — canonical design spec and doc sync
+alwaysApply: true
+---
+
+- The authoritative product and UX specification is **`docs/DESIGN.md`**. Read it when building or changing trainer behavior, flows, or MVP scope.
+- When implementing features described there, **update `docs/DESIGN.md`** if behavior or scope changes.
+- When **`docs/DESIGN.md` is edited**, keep **`README.md`**, **`CLAUDE.md`**, and **`CURSOR.md`** aligned with the spec (summaries and pointers only; avoid duplicating the full design in those files).
