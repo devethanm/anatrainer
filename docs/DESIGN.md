@@ -14,6 +14,16 @@ It is inspired by the classic practice site [djtkana.com](https://djtkana.com): 
 
 ---
 
+## Brand and wordmark
+
+- **Product and domain:** **anatrainer** (the shipped name and URL).
+- **Visual wordmark lockup:** Japanese **ひらがな** (Noto Sans, heavy weight) + Latin **trainer** (Inter Extra Bold). The lockup evokes the product name without spelling “anatrainer” as a single Latin string.
+- **Future:** the Japanese fragment may **cycle** (e.g. hiragana- vs katakana-flavored label) for emphasis or seasonal branding; static implementations can start with **ひらがな** only.
+
+Design explorations and mockups: Paper file **anatrainer** (e.g. artboards **Reference**, **App — light v1**).
+
+---
+
 ## Design principles
 
 - **Ultra-minimal** — only what the practice session needs; no decorative noise.
@@ -99,3 +109,4 @@ For a **stable, repo-tracked** visual reference (e.g. djtkana-inspired layout), 
 | Date       | Decision |
 |-----------|----------|
 | 2026-04-04 | Established `docs/DESIGN.md` as canonical product/design spec; MVP defined as rōmaji drill + subset selection including combinations. |
+| 2026-04-04 | Documented brand lockup **ひらがな** + **trainer** (product name **anatrainer**); Paper mockups **Reference** + **App — light v1**. |
