@@ -4,9 +4,12 @@ import InputBox from '@/components/input-box';
 import HiraganaOptionsBox from '@/components/hiragana-options-box';
 import KatakanaOptionsBox from '@/components/katakana-options-box';
 import { CircleDivide, Divide } from 'lucide-react';
+import { useState } from 'react';
 
 export default function Index() {
     let gap = 'gap-7';
+
+
     return (
         <>
             <Head title="anatrainer"/>

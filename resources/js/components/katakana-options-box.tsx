@@ -3,6 +3,7 @@
  * Columns = consonant groups, rows = vowel variants (a/i/u/e/o).
  */
 
+import { Checkbox } from "@/components/ui/checkbox"
 
 type KanaCol = {
     label: string;
@@ -47,12 +48,19 @@ const yoon: KanaCol[] = [
 
 const CELL_H = 32;
 
-function KanaGrid({ columns }: { columns: KanaCol[] }) {
+function KanaGrid({ columns, prefix }: { columns: KanaCol[]; prefix: string }) {
     return (
         <div style={{ display: 'flex', gap: '6px' }}>
-            {columns.map((col, ci) => (
+            {columns.map((col, ci) => {
+                const romaji = col.chars.find(c => c !== null)?.[1] ?? col.label;
+                const id = `${prefix}-${romaji}`;
+                return (
                 <div key={ci} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '3px', width: '32px' }}>
-                    <div style={{ backgroundColor: '#FFFFFF', border: '1.5px solid #A8D5FF', borderRadius: '3px', flexShrink: 0, height: '12px', width: '12px' }} />
+                    <Checkbox
+                      id={id}
+                      name={id}
+                      className="border border-blue-200"
+                    />
                     {col.chars.map((entry, ri) =>
                         entry ? (
                             <div key={ri} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1px', height: `${CELL_H}px` }}>
@@ -68,7 +76,8 @@ function KanaGrid({ columns }: { columns: KanaCol[] }) {
                         )
                     )}
                 </div>
-            ))}
+                );
+            })}
         </div>
     );
 }
@@ -88,11 +97,11 @@ export default function KatakanaOptionsBox() {
             <div style={{ color: '#6B6560', fontFamily: '"Inter", system-ui, sans-serif', fontSize: '12px', fontWeight: 600, letterSpacing: '0.06em', lineHeight: '16px', textTransform: 'uppercase' }}>
                 Katakana · カタカナ
             </div>
-            <KanaGrid columns={gojuon} />
+            <KanaGrid columns={gojuon} prefix="katakana" />
             <div style={sectionLabelStyle}>Dakuten</div>
-            <KanaGrid columns={dakuten} />
+            <KanaGrid columns={dakuten} prefix="katakana" />
             <div style={sectionLabelStyle}>Combinations</div>
-            <KanaGrid columns={yoon} />
+            <KanaGrid columns={yoon} prefix="katakana" />
         </div>
     );
 }
