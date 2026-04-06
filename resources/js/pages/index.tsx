@@ -3,6 +3,7 @@ import Wordmark from '@/components/wordmark';
 import InputBox from '@/components/input-box';
 import HiraganaOptionsBox from '@/components/hiragana-options-box';
 import KatakanaOptionsBox from '@/components/katakana-options-box';
+import { CircleDivide, Divide } from 'lucide-react';
 
 export default function Index() {
     let gap = 'gap-7';
@@ -10,14 +11,14 @@ export default function Index() {
         <>
             <Head title="anatrainer"/>
             <div className="bg-white w-full h-full flex flex-col items-center justify-center">
-                <div id="header">
+                <div id="header" className="flex">
                     <Wordmark />
                 </div>
-                <div id="main" className={`flex flex-col items-center justify-center ${gap}`}>
+                <div id="main" className={`flex flex-col items-center justify-center`}>
                     <div id="input-box">
                         <InputBox />
                     </div>
-                    <div id="options" className={`flex flex-row flex-nowrap min-w-screen p-10 justify-center ${gap}`}>
+                    <div id="options" className={`flex sm:flex-col lg:flex-row flex-nowrap min-w-screen p-10 justify-center ${gap}`}>
                         <div id="options-box" className="justify-items-center basis-1/2">
                             <HiraganaOptionsBox />
                         </div>
