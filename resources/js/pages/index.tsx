@@ -11,14 +11,14 @@ export default function Index() {
         <>
             <Head title="anatrainer"/>
             <div className="bg-white w-full h-full flex flex-col items-center justify-center">
-                <div id="header" className="flex">
+                <div id="header" className="flex pb-5">
                     <Wordmark />
                 </div>
                 <div id="main" className={`flex flex-col items-center justify-center`}>
                     <div id="input-box">
                         <InputBox />
                     </div>
-                    <div id="options" className={`flex sm:flex-col lg:flex-row flex-nowrap min-w-screen p-10 justify-center ${gap}`}>
+                    <div id="options" className={`flex flex-col lg:flex-row flex-nowrap min-w-screen p-10 justify-center ${gap}`}>
                         <div id="options-box" className="justify-items-center basis-1/2">
                             <HiraganaOptionsBox />
                         </div>

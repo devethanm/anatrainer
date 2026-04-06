@@ -83,7 +83,7 @@ const sectionLabelStyle: React.CSSProperties = {
 
 export default function KatakanaOptionsBox() {
     return (
-        <div style={{ backgroundColor: '#FFFFFF', borderColor: '#E8E4DE', borderRadius: '12px', borderStyle: 'solid', borderWidth: '1px', boxSizing: 'border-box', display: 'flex', flexDirection: 'column', fontSynthesis: 'none', gap: '10px', MozOsxFontSmoothing: 'grayscale', paddingBlock: '12px', paddingInline: '16px', WebkitFontSmoothing: 'antialiased' }}>
+        <div style={{ backgroundColor: '#FFFFFF', borderColor: '#18F333', borderRadius: '12px', borderStyle: 'solid', borderWidth: '1px', boxSizing: 'border-box', display: 'flex', flexDirection: 'column', fontSynthesis: 'none', gap: '10px', MozOsxFontSmoothing: 'grayscale', paddingBlock: '12px', paddingInline: '16px', WebkitFontSmoothing: 'antialiased' }}>
             <div style={{ color: '#6B6560', fontFamily: '"Inter", system-ui, sans-serif', fontSize: '12px', fontWeight: 600, letterSpacing: '0.06em', lineHeight: '16px', textTransform: 'uppercase' }}>
                 Katakana · カタカナ
             </div>
