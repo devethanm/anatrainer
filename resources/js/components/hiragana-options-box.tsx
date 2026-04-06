@@ -3,6 +3,7 @@
  * Columns = consonant groups, rows = vowel variants (a/i/u/e/o).
  */
 
+
 type KanaCol = {
     label: string;
     chars: ([string, string] | null)[];
@@ -51,7 +52,7 @@ function KanaGrid({ columns }: { columns: KanaCol[] }) {
         <div style={{ display: 'flex', gap: '6px' }}>
             {columns.map((col, ci) => (
                 <div key={ci} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '3px', width: '32px' }}>
-                    <div style={{ border: '1px solid #D4CFC7', borderRadius: '3px', flexShrink: 0, height: '10px', width: '10px' }} />
+                    <div style={{ backgroundColor: '#FFFFFF', border: '1.5px solid #A8D5FF', borderRadius: '3px', flexShrink: 0, height: '12px', width: '12px' }} />
                     {col.chars.map((entry, ri) =>
                         entry ? (
                             <div key={ri} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1px', height: `${CELL_H}px` }}>
@@ -83,7 +84,7 @@ const sectionLabelStyle: React.CSSProperties = {
 
 export default function HiraganaOptionsBox() {
     return (
-        <div style={{ backgroundColor: '#FFFFFF', borderColor: '#18F333', borderRadius: '12px', borderStyle: 'solid', borderWidth: '1px', boxSizing: 'border-box', display: 'flex', flexDirection: 'column', fontSynthesis: 'none', gap: '10px', MozOsxFontSmoothing: 'grayscale', paddingBlock: '12px', paddingInline: '16px', WebkitFontSmoothing: 'antialiased' }}>
+        <div style={{ backgroundColor: '#FFFFFF', borderColor: '#A8D5FF', borderRadius: '12px', borderStyle: 'solid', borderWidth: '1px', boxSizing: 'border-box', display: 'flex', flexDirection: 'column', fontSynthesis: 'none', gap: '10px', MozOsxFontSmoothing: 'grayscale', paddingBlock: '12px', paddingInline: '16px', WebkitFontSmoothing: 'antialiased' }}>
             <div style={{ color: '#6B6560', fontFamily: '"Inter", system-ui, sans-serif', fontSize: '12px', fontWeight: 600, letterSpacing: '0.06em', lineHeight: '16px', textTransform: 'uppercase' }}>
                 Hiragana · ひらがな
             </div>
