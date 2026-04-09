@@ -3,82 +3,77 @@
  * Columns = consonant groups, rows = vowel variants (a/i/u/e/o).
  */
 
+import type { CheckedState } from '@radix-ui/react-checkbox';
 import { Checkbox } from "@/components/ui/checkbox"
+import { type KanaCol, hiraganaGojuon, hiraganaDakuten, hiraganaYoon, groupId } from '@/data/kana';
 
-
-type KanaCol = {
-    label: string;
-    chars: ([string, string] | null)[];
+type Props = {
+    selectedGroups: Set<string>;
+    onToggleGroup: (id: string) => void;
+    onToggleSection: (ids: string[], checked: boolean) => void;
 };
-
-const gojuon: KanaCol[] = [
-    { label: '',  chars: [['あ','a'],  ['い','i'],  ['う','u'],  ['え','e'],  ['お','o']] },
-    { label: 'k', chars: [['か','ka'], ['き','ki'], ['く','ku'], ['け','ke'], ['こ','ko']] },
-    { label: 's', chars: [['さ','sa'], ['し','shi'], ['す','su'], ['せ','se'], ['そ','so']] },
-    { label: 't', chars: [['た','ta'], ['ち','chi'], ['つ','tsu'],['て','te'], ['と','to']] },
-    { label: 'n', chars: [['な','na'], ['に','ni'], ['ぬ','nu'], ['ね','ne'], ['の','no']] },
-    { label: 'h', chars: [['は','ha'], ['ひ','hi'], ['ふ','fu'], ['へ','he'], ['ほ','ho']] },
-    { label: 'm', chars: [['ま','ma'], ['み','mi'], ['む','mu'], ['め','me'], ['も','mo']] },
-    { label: 'y', chars: [['や','ya'], null,         ['ゆ','yu'], null,         ['よ','yo']] },
-    { label: 'r', chars: [['ら','ra'], ['り','ri'], ['る','ru'], ['れ','re'], ['ろ','ro']] },
-    { label: 'w', chars: [['わ','wa'], null,         null,         null,         ['を','wo']] },
-    { label: 'n', chars: [['ん','n'],  null,         null,         null,         null        ] },
-];
-
-const dakuten: KanaCol[] = [
-    { label: 'g', chars: [['が','ga'], ['ぎ','gi'], ['ぐ','gu'], ['げ','ge'], ['ご','go']] },
-    { label: 'z', chars: [['ざ','za'], ['じ','ji'], ['ず','zu'], ['ぜ','ze'], ['ぞ','zo']] },
-    { label: 'd', chars: [['だ','da'], ['ぢ','di'], ['づ','du'], ['で','de'], ['ど','do']] },
-    { label: 'b', chars: [['ば','ba'], ['び','bi'], ['ぶ','bu'], ['べ','be'], ['ぼ','bo']] },
-    { label: 'p', chars: [['ぱ','pa'], ['ぴ','pi'], ['ぷ','pu'], ['ぺ','pe'], ['ぽ','po']] },
-];
-
-const yoon: KanaCol[] = [
-    { label: 'ky', chars: [['きゃ','kya'], ['きゅ','kyu'], ['きょ','kyo']] },
-    { label: 'sh', chars: [['しゃ','sha'], ['しゅ','shu'], ['しょ','sho']] },
-    { label: 'ch', chars: [['ちゃ','cha'], ['ちゅ','chu'], ['ちょ','cho']] },
-    { label: 'ny', chars: [['にゃ','nya'], ['にゅ','nyu'], ['にょ','nyo']] },
-    { label: 'hy', chars: [['ひゃ','hya'], ['ひゅ','hyu'], ['ひょ','hyo']] },
-    { label: 'my', chars: [['みゃ','mya'], ['みゅ','myu'], ['みょ','myo']] },
-    { label: 'ry', chars: [['りゃ','rya'], ['りゅ','ryu'], ['りょ','ryo']] },
-    { label: 'gy', chars: [['ぎゃ','gya'], ['ぎゅ','gyu'], ['ぎょ','gyo']] },
-    { label: 'j',  chars: [['じゃ','ja'],  ['じゅ','ju'],  ['じょ','jo']]  },
-    { label: 'by', chars: [['びゃ','bya'], ['びゅ','byu'], ['びょ','byo']] },
-    { label: 'py', chars: [['ぴゃ','pya'], ['ぴゅ','pyu'], ['ぴょ','pyo']] },
-];
 
 const CELL_H = 32;
 
-function KanaGrid({ columns, prefix }: { columns: KanaCol[]; prefix: string }) {
+function sectionCheckedState(ids: string[], selectedGroups: Set<string>): CheckedState {
+    const count = ids.filter(id => selectedGroups.has(id)).length;
+    if (count === 0) return false;
+    if (count === ids.length) return true;
+    return 'indeterminate';
+}
+
+function KanaGrid({ columns, prefix, selectedGroups, onToggleGroup, onToggleSection }: {
+    columns: KanaCol[];
+    prefix: string;
+    selectedGroups: Set<string>;
+    onToggleGroup: (id: string) => void;
+    onToggleSection: (ids: string[], checked: boolean) => void;
+}) {
+    const allIds = columns.map(col => groupId(prefix as 'hiragana' | 'katakana', col));
+    const selectAllState = sectionCheckedState(allIds, selectedGroups);
+
     return (
-        <div style={{ display: 'flex', gap: '6px' }}>
-            {columns.map((col, ci) => {
-                const romaji = col.chars.find(c => c !== null)?.[1] ?? col.label;
-                const id = `${prefix}-${romaji}`;
-                return (
-                <div key={ci} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '3px', width: '32px' }}>
-                    <Checkbox
-                      id={id}
-                      name={id}
-                      className="border border-blue-200"
-                    />
-                    {col.chars.map((entry, ri) =>
-                        entry ? (
-                            <div key={ri} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1px', height: `${CELL_H}px` }}>
-                                <div style={{ color: '#1A1917', fontFamily: '"Noto Sans", system-ui, sans-serif', fontSize: '15px', fontWeight: 600, lineHeight: '20px' }}>
-                                    {entry[0]}
-                                </div>
-                                <div style={{ color: '#6B6560', fontFamily: '"Inter", system-ui, sans-serif', fontSize: '9px', fontWeight: 500, lineHeight: '11px' }}>
-                                    {entry[1]}
-                                </div>
-                            </div>
-                        ) : (
-                            <div key={ri} style={{ height: `${CELL_H}px`, width: '100%' }} />
-                        )
-                    )}
-                </div>
-                );
-            })}
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                <Checkbox
+                    checked={selectAllState}
+                    onCheckedChange={(v) => onToggleSection(allIds, v === true)}
+                    className="border border-blue-200"
+                />
+                <span style={{ color: '#A09890', fontFamily: '"Inter", system-ui, sans-serif', fontSize: '9px', fontWeight: 600, letterSpacing: '0.06em', textTransform: 'uppercase' }}>
+                    Select all
+                </span>
+            </div>
+            <div style={{ display: 'flex', gap: '6px' }}>
+                {columns.map((col, ci) => {
+                    const id = groupId(prefix as 'hiragana' | 'katakana', col);
+                    return (
+                        <div key={ci} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '3px', width: '32px' }}>
+                            <Checkbox
+                                id={id}
+                                name={id}
+                                checked={selectedGroups.has(id)}
+                                onCheckedChange={() => onToggleGroup(id)}
+                                className="border border-blue-200"
+                            />
+                            {col.chars.map((entry, ri) =>
+                                entry ? (
+                                    <div key={ri} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1px', height: `${CELL_H}px` }}>
+                                        <div style={{ color: '#1A1917', fontFamily: '"Noto Sans", system-ui, sans-serif', fontSize: '15px', fontWeight: 600, lineHeight: '20px' }}>
+                                            {entry[0]}
+                                        </div>
+                                        <div style={{ color: '#6B6560', fontFamily: '"Inter", system-ui, sans-serif', fontSize: '9px', fontWeight: 500, lineHeight: '11px' }}>
+                                            {entry[1]}
+                                        </div>
+                                    </div>
+                                ) : (
+                                    <div key={ri} style={{ height: `${CELL_H}px`, width: '100%' }} />
+                                )
+                            )}
+                        </div>
+                    );
+                })}
+            </div>
         </div>
     );
 }
@@ -92,17 +87,17 @@ const sectionLabelStyle: React.CSSProperties = {
     textTransform: 'uppercase',
 };
 
-export default function HiraganaOptionsBox() {
+export default function HiraganaOptionsBox({ selectedGroups, onToggleGroup, onToggleSection }: Props) {
     return (
         <div style={{ backgroundColor: '#FFFFFF', borderColor: '#A8D5FF', borderRadius: '12px', borderStyle: 'solid', borderWidth: '1px', boxSizing: 'border-box', display: 'flex', flexDirection: 'column', fontSynthesis: 'none', gap: '10px', MozOsxFontSmoothing: 'grayscale', paddingBlock: '12px', paddingInline: '16px', WebkitFontSmoothing: 'antialiased' }}>
             <div style={{ color: '#6B6560', fontFamily: '"Inter", system-ui, sans-serif', fontSize: '12px', fontWeight: 600, letterSpacing: '0.06em', lineHeight: '16px', textTransform: 'uppercase' }}>
                 Hiragana · ひらがな
             </div>
-            <KanaGrid columns={gojuon} prefix="hiragana" />
+            <KanaGrid columns={hiraganaGojuon} prefix="hiragana" selectedGroups={selectedGroups} onToggleGroup={onToggleGroup} onToggleSection={onToggleSection} />
             <div style={sectionLabelStyle}>Dakuten</div>
-            <KanaGrid columns={dakuten} prefix="hiragana" />
+            <KanaGrid columns={hiraganaDakuten} prefix="hiragana" selectedGroups={selectedGroups} onToggleGroup={onToggleGroup} onToggleSection={onToggleSection} />
             <div style={sectionLabelStyle}>Combinations</div>
-            <KanaGrid columns={yoon} prefix="hiragana" />
+            <KanaGrid columns={hiraganaYoon} prefix="hiragana" selectedGroups={selectedGroups} onToggleGroup={onToggleGroup} onToggleSection={onToggleSection} />
         </div>
     );
 }
