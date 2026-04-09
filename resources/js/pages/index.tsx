@@ -1,5 +1,5 @@
 import { Head } from '@inertiajs/react';
-import { useState, useMemo, useEffect } from 'react';
+import { useState, useMemo } from 'react';
 import Wordmark from '@/components/wordmark';
 import InputBox from '@/components/input-box';
 import HiraganaOptionsBox from '@/components/hiragana-options-box';
@@ -56,13 +56,16 @@ export default function Index() {
     const [streak, setStreak] = useState(0);
 
     // When pool changes, re-pick if the current character is no longer in it
-    useEffect(() => {
-        if (characterPool.length === 0) return;
-        setCurrentEntry(prev => {
-            const stillInPool = characterPool.some(([k]) => k === prev[0]);
-            return stillInPool ? prev : randomEntry(characterPool, prev);
-        });
-    }, [characterPool]);
+    const [prevPool, setPrevPool] = useState(characterPool);
+    if (prevPool !== characterPool) {
+        setPrevPool(characterPool);
+        if (characterPool.length > 0) {
+            const stillInPool = characterPool.some(([k]) => k === currentEntry[0]);
+            if (!stillInPool) {
+                setCurrentEntry(randomEntry(characterPool, currentEntry));
+            }
+        }
+    }
 
     function handleCorrect() {
         if (characterPool.length === 0) return;
@@ -77,7 +80,7 @@ export default function Index() {
     function toggleGroup(id: string) {
         setSelectedGroups(prev => {
             const next = new Set(prev);
-            next.has(id) ? next.delete(id) : next.add(id);
+            if (next.has(id)) { next.delete(id); } else { next.add(id); }
             return next;
         });
     }
@@ -100,6 +103,7 @@ export default function Index() {
                 <div id="main" className={`flex flex-col items-center justify-center`}>
                     <div id="input-box">
                         <InputBox
+                            key={currentEntry[0]}
                             character={currentEntry[0]}
                             romaji={currentEntry[1]}
                             onCorrect={handleCorrect}

@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Input } from "@/components/ui/input"
 
 type Props = {
@@ -13,10 +13,6 @@ type Props = {
 export default function InputBox({ character, romaji, onCorrect, onError, streak, disabled = false }: Props) {
     const [value, setValue] = useState('');
     const isError = value.length > 0 && !romaji.startsWith(value);
-
-    useEffect(() => {
-        setValue('');
-    }, [character]);
 
     function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
         const v = e.target.value;
